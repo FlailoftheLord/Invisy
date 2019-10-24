@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.flail.invisy.tools.CommonUtilities;
 import me.flail.invisy.tools.Logger;
 import me.flail.invisy.tools.TabCompleter;
 import me.flail.invisy.user.User;
@@ -70,6 +71,19 @@ public class Invisy extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.hasPermission("invisy.command")) {
+			sender.sendMessage(CommonUtilities.chatFormat("&cYou don't have permission to use that."));
+
+			return true;
+		}
+		if ((args.length >= 1) && args[0].equalsIgnoreCase("reload")) {
+
+			this.reload();
+			sender.sendMessage(CommonUtilities.chatFormat("&aReloaded Invisy's Settings."));
+			return true;
+		}
+
+		sender.sendMessage(CommonUtilities.chatFormat("&cUsage&8: &7/invisy reload"));
 		return true;
 	}
 

@@ -5,3 +5,8 @@ version: 1.0
 api-version: 1.14
 main: me.flail.invisy.Invisy
 
+commands:
+  invisy:
+    description: main command
+    usage: /invisy reload
+    alias: [invis]

@@ -23,7 +23,7 @@ public class TabCompleter extends Logger {
 
 		switch (args.length) {
 		case 1:
-
+			baseArgs.add("reload");
 
 		}
 
