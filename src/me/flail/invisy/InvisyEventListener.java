@@ -17,7 +17,6 @@ public class InvisyEventListener extends Logger implements Listener {
 			return;
 		}
 
-		LivingEntity targetter = (LivingEntity) event.getEntity();
 		LivingEntity target = event.getTarget();
 		if (target.hasPotionEffect(PotionEffectType.INVISIBILITY) && plugin.mobsIgnoreInvisPlayers) {
 			event.setCancelled(true);
