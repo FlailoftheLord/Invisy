@@ -24,6 +24,10 @@ public class CommonUtilities extends BaseUtilities {
 		return formatString(message);
 	}
 
+	public static String chatFormat(String message) {
+		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
 	/**
 	 * Converts a string, by translating the following placeholders with their counterparts defined in
 	 * the provided Map of placeholders.
