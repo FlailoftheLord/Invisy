@@ -8,9 +8,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import me.flail.invisy.tools.Logger;
+import me.flail.invisy.user.User;
 
 public class InvisyEventListener extends Logger implements Listener {
 
@@ -54,6 +58,27 @@ public class InvisyEventListener extends Logger implements Listener {
 
 		}
 
+	}
+
+	@EventHandler
+	public void playerQuit(PlayerQuitEvent event) {
+		plugin.invisibleUsers.remove(event.getPlayer().getUniqueId());
+	}
+
+	@EventHandler
+	public void playerDC(PlayerKickEvent event) {
+		plugin.invisibleUsers.remove(event.getPlayer().getUniqueId());
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void playerJoin(PlayerJoinEvent event) {
+		User user = new User(event.getPlayer().getUniqueId());
+
+		if (user.isVanished() && plugin.persistVanish) {
+			user.setVanished(true);
+		}
+
+		plugin.loadVanishedPlayers();
 	}
 
 }

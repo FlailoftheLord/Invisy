@@ -2,12 +2,23 @@ name: Invisy
 prefix: Invisy
 description: better invisibility
 author: FlailoftheLord
-version: 1.0
+version: 1.1
 api-version: 1.14
 main: me.flail.invisy.Invisy
+
+depend: [ProtocolLib]
 
 commands:
   invisy:
     description: main command
     usage: /invisy reload
     alias: [invis]
+    
+  vanish:
+    alias: [v,hide,invisible]
+    
+
+# Permissions
+#  invisy.command
+#  invisy.vanish
+#  invisy.seevanish

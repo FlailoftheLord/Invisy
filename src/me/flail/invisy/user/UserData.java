@@ -31,10 +31,7 @@ public class UserData extends Logger {
 		values.put("UUID", user.uuid().toString());
 		values.put("Name", new String[] {user.name()});
 		values.put("Online", "false");
-		values.put("Gamemode", user.gamemode());
-		values.put("Frozen", "false");
-		values.put("Muted", "false");
-		values.put("Banned", "false");
+		values.put("Vanished", "false");
 		/************* YOINK, tyvm! ******************/
 		for (String key : values.keySet()) {
 			if (!file.hasValue(key)) {

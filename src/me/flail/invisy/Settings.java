@@ -37,6 +37,7 @@ public class Settings extends Logger {
 		Map<String, Object> values = new HashMap<>();
 
 		values.put("MobsIgnoreInvisiblePlayers", Boolean.valueOf(true));
+		values.put("VanishStatePersistent", Boolean.valueOf(true));
 
 		setValues(settings, values);
 	}

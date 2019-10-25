@@ -32,6 +32,10 @@ public class User extends UserData {
 		super(uuid);
 	}
 
+	public User(Player player) {
+		super(player.getUniqueId());
+	}
+
 	/**
 	 * TBH i don't even know why i put this here... lol
 	 * 
@@ -132,6 +136,10 @@ public class User extends UserData {
 		return dataFile().getBoolean("Reported");
 	}
 
+	public boolean isVanished() {
+		return dataFile().getBoolean("Vanished");
+	}
+
 	public boolean hasPermission(String permission) {
 		if (isOnline()) {
 			return player().hasPermission(permission);
@@ -214,6 +222,17 @@ public class User extends UserData {
 			return;
 		}
 
+	}
+
+	public void setVanished(boolean vanishState) {
+		dataFile().setValue("Vanished", Boolean.valueOf(vanishState));
+
+		if (vanishState) {
+			plugin.invisibleUsers.add(uuid());
+			return;
+		}
+
+		plugin.invisibleUsers.remove(uuid());
 	}
 
 	public void teleport(User target) {
