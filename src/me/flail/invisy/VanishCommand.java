@@ -9,11 +9,9 @@ import me.flail.invisy.user.User;
 public class VanishCommand extends Logger {
 
 	private CommandSender operator;
-	private String[] args;
 
 	public VanishCommand(CommandSender op, String[] args) {
 		operator = op;
-		this.args = args;
 	}
 
 	public boolean execute() {
