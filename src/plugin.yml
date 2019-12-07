@@ -2,7 +2,7 @@ name: Invisy
 prefix: Invisy
 description: better invisibility
 author: FlailoftheLord
-version: 1.1
+version: 1.2
 api-version: 1.14
 main: me.flail.invisy.Invisy
 
@@ -20,5 +20,5 @@ commands:
 
 # Permissions
 #  invisy.command
-#  invisy.vanish
-#  invisy.seevanish
+#  invisy.hide
+#  invisy.see

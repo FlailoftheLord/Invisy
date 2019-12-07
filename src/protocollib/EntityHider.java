@@ -46,7 +46,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-public class EntityHider implements Listener {
+import me.flail.invisy.tools.Logger;
+
+public class EntityHider extends Logger implements Listener {
 	protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
 
 	// Packets that update remote player entities
@@ -273,6 +275,7 @@ public class EntityHider implements Listener {
 
 		if (visibleBefore) {
 			PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
+
 			destroyEntity.getIntegerArrays().write(0, new int[] { entity.getEntityId() });
 
 			// Make the entity disappear

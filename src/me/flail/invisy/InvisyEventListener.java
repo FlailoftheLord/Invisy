@@ -11,12 +11,18 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
+
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.ListeningWhitelist;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.events.PacketListener;
 
 import me.flail.invisy.tools.Logger;
 import me.flail.invisy.user.User;
 
-public class InvisyEventListener extends Logger implements Listener {
+public class InvisyEventListener extends Logger implements Listener, PacketListener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void entityTargetEntity(EntityTargetLivingEntityEvent event) {
@@ -61,6 +67,12 @@ public class InvisyEventListener extends Logger implements Listener {
 	}
 
 	@EventHandler
+	public void packetEvent(PacketEvent event) {
+		PacketType type = event.getPacketType();
+
+	}
+
+	@EventHandler
 	public void playerQuit(PlayerQuitEvent event) {
 		plugin.invisibleUsers.remove(event.getPlayer().getUniqueId());
 	}
@@ -76,9 +88,36 @@ public class InvisyEventListener extends Logger implements Listener {
 
 		if (user.isVanished() && plugin.persistVanish) {
 			user.setVanished(true);
+		} else {
+			user.setVanished(false);
 		}
 
 		plugin.loadVanishedPlayers();
+	}
+
+	@Override
+	public Plugin getPlugin() {
+		return plugin;
+	}
+
+	@Override
+	public ListeningWhitelist getReceivingWhitelist() {
+		return null;
+	}
+
+	@Override
+	public ListeningWhitelist getSendingWhitelist() {
+		return null;
+	}
+
+	@Override
+	public void onPacketReceiving(PacketEvent paramPacketEvent) {
+
+	}
+
+	@Override
+	public void onPacketSending(PacketEvent paramPacketEvent) {
+
 	}
 
 }

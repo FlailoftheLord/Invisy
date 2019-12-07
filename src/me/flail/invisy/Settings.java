@@ -58,7 +58,9 @@ public class Settings extends Logger {
 			"                                                                  #\r\n" +
 			"==================================================================#\r\n" +
 			"-----------------------------------------------------------------\r\n" +
-			"- - -\r\n";
+			"- - -\r\n" +
+			" Hide & See permissions are layered from 0 - 100, with 100 being the highest:\r\n" +
+			" invisy.hide.100  and  invisy.see.100\r\n";
 
 	protected void setValues(DataFile file, Map<String, Object> values) {
 		for (String key : values.keySet()) {

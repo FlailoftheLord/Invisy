@@ -16,6 +16,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comphenix.protocol.ProtocolLibrary;
+
 import me.flail.invisy.tools.CommonUtilities;
 import me.flail.invisy.tools.Logger;
 import me.flail.invisy.tools.TabCompleter;
@@ -32,8 +34,7 @@ public class Invisy extends JavaPlugin {
 
 	public Settings settings;
 
-	public boolean mobsIgnoreInvisPlayers = true;
-	public boolean persistVanish = false;
+	public boolean mobsIgnoreInvisPlayers = true, persistVanish = false;
 
 	public EntityHider hider;
 
@@ -59,6 +60,7 @@ public class Invisy extends JavaPlugin {
 			getCommand(cmd).setExecutor(this);
 		}
 
+		ProtocolLibrary.getProtocolManager().addPacketListener(new InvisyEventListener());
 		server.getPluginManager().registerEvents(new InvisyEventListener(), this);
 
 		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
@@ -152,14 +154,18 @@ public class Invisy extends JavaPlugin {
 
 	}
 
+	public void loadPlayer(Player player) {
+
+
+	}
+
 	protected void setVanishState(Player player, boolean state) {
 
 		for (UUID u : userMap.keySet()) {
 			Player p = server.getPlayer(u);
 
 			if (state) {
-				if (!p.hasPermission("invisy.seevanish")) {
-
+				if (!canSee(p, player)) {
 					hider.hideEntity(p, player);
 				}
 
@@ -169,6 +175,23 @@ public class Invisy extends JavaPlugin {
 			hider.showEntity(p, player);
 		}
 
+	}
+
+	protected boolean canSee(Player subject, Player target) {
+		int min = 0, max = 100;
+		int subjectPerm = -1, targetPerm = -1;
+
+		for (int p = max; p >= min; p--) {
+			if ((subjectPerm == -1) && subject.hasPermission("invisy.see." + p)) {
+				subjectPerm = p;
+			}
+
+			if ((targetPerm == -1) && target.hasPermission("invisy.hide." + p)) {
+				targetPerm = p;
+			}
+		}
+
+		return subjectPerm >= targetPerm;
 	}
 
 }

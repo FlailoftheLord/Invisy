@@ -21,7 +21,7 @@ public class VanishCommand extends Logger {
 			return true;
 		}
 
-		if (operator.hasPermission("invisy.vanish")) {
+		if (operator.hasPermission("invisy.hide")) {
 			User user = new User((Player) operator);
 
 			user.setVanished(!user.isVanished());
