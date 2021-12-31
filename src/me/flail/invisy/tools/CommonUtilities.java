@@ -24,7 +24,7 @@ public class CommonUtilities extends BaseUtilities {
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 
-	protected String chat(String message) {
+	protected static String chat(String message) {
 		return formatString(message);
 	}
 

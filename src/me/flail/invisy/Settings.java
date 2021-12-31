@@ -2,25 +2,26 @@ package me.flail.invisy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import me.flail.invisy.tools.DataFile;
 import me.flail.invisy.tools.Logger;
 import me.flail.invisy.user.User;
 
 public class Settings extends Logger {
-	private DataFile settings;
+	private DataFile file;
 
 	protected Settings(User user) {
-		settings = user.dataFile();
+		file = user.dataFile();
 	}
 
 	public Settings() {
-		settings = new DataFile("Settings.yml");
+		file = new DataFile("Settings.yml");
 
 	}
 
-	public DataFile data() {
-		return settings;
+	private DataFile data() {
+		return file;
 	}
 
 	public DataFile file() {
@@ -28,7 +29,7 @@ public class Settings extends Logger {
 	}
 
 	public void load() {
-		settings.setHeader(header);
+		file.setHeader(header);
 
 		loadDefaultValues();
 	}
@@ -38,18 +39,19 @@ public class Settings extends Logger {
 
 		values.put("MobsIgnoreInvisiblePlayers", Boolean.valueOf(true));
 		values.put("VanishStatePersistent", Boolean.valueOf(true));
+		values.put("FlyOnVanish", Boolean.valueOf(true));
+		values.put("VanishFromTablist", Boolean.valueOf(false));
+		values.put("VanishStatusMessage", "&7You are invisible to mobs and players");
+		values.put("ShowOffline", Boolean.valueOf(false));
 
-		setValues(settings, values);
+		setValues(file, values);
 	}
 
-	private String header =  "-----------------------------------------------------------------\r\n" +
+	private String header = "-----------------------------------------------------------------\r\n" +
 			"==================================================================#\r\n" +
 			"                                                                  #\r\n" +
 			"                 Invisy by FlailoftheLord.                        #\r\n" +
 			"         -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                  #\r\n" +
-			"           If you have any Questions or feedback                  #\r\n" +
-			"              Join my discord server here:                        #\r\n" +
-			"               https://discord.gg/wuxW5PS                         #\r\n" +
 			"   ______               __        _____                           #\r\n" +
 			"   |       |           /  \\         |        |                    #\r\n" +
 			"   |__     |          /____\\        |        |                    #\r\n" +
@@ -63,12 +65,12 @@ public class Settings extends Logger {
 			" invisy.hide.100  and  invisy.see.100\r\n";
 
 	protected void setValues(DataFile file, Map<String, Object> values) {
-		for (String key : values.keySet()) {
-			if (!file.hasValue(key)) {
-				file.setValue(key, values.get(key));
+		for (Entry<String, Object> key : values.entrySet()) {
+			String k = key.getKey();
+			if (!file.hasValue(k)) {
+				file.setValue(k, values.get(k));
 			}
 		}
 	}
 
 }
-

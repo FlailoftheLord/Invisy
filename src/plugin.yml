@@ -2,8 +2,10 @@ name: Invisy
 prefix: Invisy
 description: better invisibility
 author: FlailoftheLord
-version: 1.2
-api-version: 1.14
+website: flailofthelord.github.io
+
+version: 1.3
+api-version: 1.18
 main: me.flail.invisy.Invisy
 
 depend: [ProtocolLib]
@@ -16,6 +18,18 @@ commands:
     
   vanish:
     alias: [v,hide,invisible]
+    permission: invisy.vanish
+    
+permissions:
+  
+  invisy.hide:
+    default: op
+    children:
+      invisy.hide.100: true
+  invisy.see:
+    default: op
+    children:
+      invisy.see.100: true
     
 
 # Permissions

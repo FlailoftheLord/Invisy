@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 
 import me.flail.invisy.tools.CommonUtilities;
 import me.flail.invisy.tools.Logger;
@@ -34,13 +35,19 @@ public class Invisy extends JavaPlugin {
 
 	public Settings settings;
 
-	public boolean mobsIgnoreInvisPlayers = true, persistVanish = false;
+	public boolean mobsIgnoreInvisPlayers = true, persistVanish = false, flyOnVanish = false, vanishFromTablist = false,
+			showOffline = false;
+	public String vanishStatusMsg = "";
 
 	public EntityHider hider;
+
+	public ProtocolManager protocolLib;
 
 	@Override
 	public void onLoad() {
 		server = getServer();
+
+		protocolLib = ProtocolLibrary.getProtocolManager();
 
 	}
 
@@ -53,6 +60,10 @@ public class Invisy extends JavaPlugin {
 
 		mobsIgnoreInvisPlayers = settings.file().getBoolean("MobsIgnoreInvisiblePlayers");
 		persistVanish = settings.file().getBoolean("VanishStatePersistent");
+		flyOnVanish = settings.file().getBoolean("FlyOnVanish");
+		vanishFromTablist = settings.file().getBoolean("VanishFromTablist");
+		vanishStatusMsg = settings.file().getValue("VanishStatusMessage");
+		showOffline = settings.file().getBoolean("ShowOffline");
 
 		loadOnlinePlayers();
 
@@ -60,7 +71,7 @@ public class Invisy extends JavaPlugin {
 			getCommand(cmd).setExecutor(this);
 		}
 
-		ProtocolLibrary.getProtocolManager().addPacketListener(new InvisyEventListener());
+		protocolLib.addPacketListener(new InvisyEventListener());
 		server.getPluginManager().registerEvents(new InvisyEventListener(), this);
 
 		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
@@ -76,7 +87,9 @@ public class Invisy extends JavaPlugin {
 			}
 
 			loadVanishedPlayers();
-		}, 64L);
+
+			VanishUtil.runVanishStatus();
+		}, 1L);
 
 	}
 
@@ -84,7 +97,6 @@ public class Invisy extends JavaPlugin {
 	public void onDisable() {
 		server.getScheduler().cancelTasks(this);
 		userMap.clear();
-		invisibleUsers.clear();
 
 		Logger.sendConsole("&cDisabled Invisy.");
 	}
@@ -141,40 +153,49 @@ public class Invisy extends JavaPlugin {
 			OfflinePlayer player = server.getOfflinePlayer(uuid);
 			if (player.isOnline()) {
 
-				if (invisibleUsers.contains(uuid)) {
+				User u = new User(uuid);
+				if (invisibleUsers.contains(uuid) || u.isVanished()) {
 
-					setVanishState((Player) player, true);
-					return;
+					setVanishState(u, true);
+					continue;
 				}
 
-				setVanishState((Player) player, false);
+				setVanishState(u, false);
 			}
 
 		}
 
 	}
 
-	public void loadPlayer(Player player) {
+	public void setVanishState(User u, boolean state) {
+		u.setVanished(state);
+		u.player().setCollidable(!state);
+		if (flyOnVanish)
+			u.player().setAllowFlight(state);
+		u.player().setFlying(state);
 
-
-	}
-
-	protected void setVanishState(Player player, boolean state) {
-
-		for (UUID u : userMap.keySet()) {
-			Player p = server.getPlayer(u);
+		for (UUID uuid : userMap.keySet()) {
+			Player p = server.getPlayer(uuid);
 
 			if (state) {
-				if (!canSee(p, player)) {
-					hider.hideEntity(p, player);
+				if (!canSee(p, u.player())) {
+					if (vanishFromTablist)
+						p.hidePlayer(this, u.player());
+
+					hider.hideEntity(p, u.player());
 				}
 
 				continue;
 			}
 
-			hider.showEntity(p, player);
+			if (vanishFromTablist)
+				p.showPlayer(this, u.player());
+
+			hider.showEntity(p, u.player());
+
 		}
 
+		VanishUtil.runVanishStatus();
 	}
 
 	protected boolean canSee(Player subject, Player target) {

@@ -226,13 +226,10 @@ public class User extends UserData {
 
 	public void setVanished(boolean vanishState) {
 		dataFile().setValue("Vanished", Boolean.valueOf(vanishState));
-
-		if (vanishState) {
+		if (vanishState)
 			plugin.invisibleUsers.add(uuid());
-			return;
-		}
-
-		plugin.invisibleUsers.remove(uuid());
+		else
+			plugin.invisibleUsers.remove(uuid());
 	}
 
 	public void teleport(User target) {
@@ -372,7 +369,6 @@ public class User extends UserData {
 		pl.put("%player%", name());
 		pl.put("%uuid%", id());
 		pl.put("%gamemode%", gamemode());
-
 
 		return pl;
 	}

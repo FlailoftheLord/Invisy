@@ -121,6 +121,7 @@ public class BaseUtilities extends LegacyUtils {
 		list.add(EntityType.OCELOT);
 		list.add(EntityType.PARROT);
 		list.add(EntityType.PIG);
+		list.add(EntityType.PIGLIN);
 		list.add(EntityType.POLAR_BEAR);
 		list.add(EntityType.RABBIT);
 		list.add(EntityType.SALMON);
@@ -158,7 +159,7 @@ public class BaseUtilities extends LegacyUtils {
 		list.add(EntityType.ILLUSIONER);
 		list.add(EntityType.MAGMA_CUBE);
 		list.add(EntityType.PHANTOM);
-		list.add(EntityType.PIG_ZOMBIE);
+		list.add(EntityType.ZOMBIFIED_PIGLIN);
 		list.add(EntityType.PILLAGER);
 		list.add(EntityType.PUFFERFISH);
 		list.add(EntityType.RAVAGER);

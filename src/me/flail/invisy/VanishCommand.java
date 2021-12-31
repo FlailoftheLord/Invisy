@@ -1,5 +1,7 @@
 package me.flail.invisy;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,16 +32,18 @@ public class VanishCommand extends Logger {
 
 			if (user.isVanished()) {
 				user.sendMessage("&aYou are now invisible!");
+				if (plugin.showOffline && user.hasPermission("invisy.vanish") && !user.hasPermission("invisy.silent"))
+					Bukkit.broadcastMessage(ChatColor.YELLOW + user.name() + " left the game");
 
 				return true;
 			}
 
 			user.sendMessage("&6You are no longer invisible.");
+			if (plugin.showOffline && user.hasPermission("invisy.vanish") && !user.hasPermission("invisy.silent"))
+				Bukkit.broadcastMessage(ChatColor.YELLOW + user.name() + " joined the game");
 		}
-
 
 		return true;
 	}
-
 
 }
