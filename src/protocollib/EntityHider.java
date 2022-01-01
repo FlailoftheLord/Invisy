@@ -22,6 +22,7 @@ import static com.comphenix.protocol.PacketType.Play.Server.SPAWN_ENTITY_LIVING;
 import static com.comphenix.protocol.PacketType.Play.Server.SPAWN_ENTITY_PAINTING;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -307,9 +308,9 @@ public class EntityHider extends Logger implements Listener {
 		boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
 
 		if (visibleBefore) {
-			var destroyEntity = new PacketContainer(ENTITY_DESTROY);
+			final PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
 
-			destroyEntity.getIntegerArrays().write(0, new int[] { entity.getEntityId() });
+			destroyEntity.getIntLists().write(0, new ArrayList<Integer>(entity.getEntityId()));
 
 			// Make the entity disappear
 			try {
